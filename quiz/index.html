@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz de sostenibilidad · Savbia</title>
+  <meta name="description" content="Ocho preguntas, dos minutos. Descubre tu perfil de consumo consciente y tus siguientes pasos con Savbia." />
+  <meta property="og:title" content="Quiz de sostenibilidad · Savbia" />
+  <meta property="og:image" content="/img/og.jpg" />
+  <meta name="theme-color" content="#E9ECE5" />
+  <link rel="icon" type="image/png" href="/img/icono-explorar.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="page">
+  <!--@header quiz-->
+
+  <main>
+    <section class="quiz">
+      <div class="wrap">
+        <div class="quiz__card" data-quiz aria-live="polite">
+          <!-- Inicio -->
+          <div class="quiz__screen quiz__intro" data-screen="intro">
+            <p class="eyebrow">Quiz de sostenibilidad</p>
+            <h1>¿Qué tipo de consumidor consciente eres?</h1>
+            <p class="lead">Sin respuestas correctas ni incorrectas. Conoce desde dónde empiezas y cuáles son tus siguientes pasos.</p>
+            <div class="quiz__meta"><span class="tag">8 preguntas</span><span class="tag">2 minutos</span><span class="tag tag--soon">Sin registro</span></div>
+            <button class="btn" type="button" data-start>Descubre tu perfil</button>
+          </div>
+
+          <!-- Pregunta -->
+          <div class="quiz__screen" data-screen="question" hidden>
+            <div class="quiz__top">
+              <button class="quiz__back" type="button" data-back>← Anterior</button>
+              <span class="quiz__count" data-count-label>1 / 8</span>
+            </div>
+            <div class="quiz__bar" aria-hidden="true"><span data-bar></span></div>
+            <h2 class="quiz__q" data-question tabindex="-1"></h2>
+            <div class="quiz__opts" data-options role="group"></div>
+          </div>
+
+          <!-- Resultado -->
+          <div class="quiz__screen quiz__result" data-screen="result" hidden>
+            <p class="eyebrow">Tu perfil</p>
+            <h2 class="quiz__profile" data-profile tabindex="-1"></h2>
+            <div class="quiz__score"><div class="quiz__meter" aria-hidden="true"><span data-meter></span></div><span class="quiz__count" data-score></span></div>
+            <p class="quiz__desc" data-desc></p>
+            <ul class="quiz__tips" data-tips></ul>
+            <div class="hero__ctas">
+              <a href="/" class="btn">Conoce la recicladora</a>
+              <a href="/blog/" class="btn btn--ghost">Ideas en el blog</a>
+              <button class="btn btn--ghost" type="button" data-restart>Repetir</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!--@footer-->
+  <script type="module" src="/src/pages/quiz.js"></script>
+</body>
+</html>

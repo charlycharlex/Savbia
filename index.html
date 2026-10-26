@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recicladora Savbia · Tus restos de comida, de vuelta a la tierra</title>
+  <meta name="description" content="La recicladora de cocina Savbia convierte sobras, cáscaras y café en un material seco y sin olor en horas. Llega a Latinoamérica. Savbia, plataforma de consumo consciente." />
+  <meta property="og:title" content="Recicladora Savbia" />
+  <meta property="og:description" content="Tus restos de comida, de vuelta a la tierra. Hasta 80% menos volumen, sin olores, desde tu cocina." />
+  <meta property="og:image" content="/img/og.jpg" />
+  <meta name="theme-color" content="#E9ECE5" />
+  <link rel="icon" type="image/png" href="/img/icono-explorar.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/models/recicladora.glb" as="fetch" crossorigin />
+</head>
+<body>
+  <!-- Escena 3D fija detrás del contenido -->
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div id="labels" aria-hidden="true">
+    <div class="hotspot" data-part="tapa"><i></i></div>
+    <div class="hotspot" data-part="cubeta"><i></i></div>
+    <div class="hotspot" data-part="filtro"><i></i></div>
+
+    <div class="plabel" data-part="tapa"><i></i><span><b>01</b> Tapa hermética</span></div>
+    <div class="plabel" data-part="asa"><i></i><span><b>02</b> Asa abatible</span></div>
+    <div class="plabel" data-part="cubeta"><i></i><span><b>03</b> Cubeta cerámica 3&nbsp;L</span></div>
+    <div class="plabel" data-part="filtro"><i></i><span><b>04</b> Filtro de carbón activado</span></div>
+    <div class="plabel" data-part="carcasa"><i></i><span><b>05</b> Carcasa</span></div>
+    <div class="plabel" data-part="camara"><i></i><span><b>06</b> Cámara térmica</span></div>
+    <div class="plabel" data-part="base"><i></i><span><b>07</b> Base y motor</span></div>
+  </div>
+
+  <div id="loader" role="status" aria-live="polite">
+    <img src="/img/logo-savbia.png" alt="" width="151" height="60" />
+    <div class="bar"><span></span></div>
+    <p>Preparando la recicladora…</p>
+  </div>
+
+  <!--@header inicio-->
+
+  <!-- Barra de producto (estilo Apple) -->
+  <div class="pnav" id="pnav">
+    <div class="wrap pnav__in">
+      <a href="#inicio" class="pnav__name">Recicladora Savbia</a>
+      <nav aria-label="Secciones del producto">
+        <a href="#desarme">Diseño</a>
+        <a href="#por-dentro">Por dentro</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#colores">Colores</a>
+        <a href="#especificaciones">Especificaciones</a>
+      </nav>
+      <a href="#lista" class="btn btn--sm">Lista de espera</a>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="inicio" data-scene="hero">
+      <div class="wrap hero__in">
+        <div class="hero__copy">
+          <p class="eyebrow">Nuevo · Llega a Latinoamérica</p>
+          <h1>Tus restos de comida, de vuelta a la&nbsp;tierra.</h1>
+          <p class="lead">La recicladora de cocina Savbia transforma sobras, cáscaras y café en un material seco y sin olor en cuestión de horas. Sin separar, sin moscas, sin bolsas que escurren.</p>
+          <div class="hero__ctas">
+            <a href="#lista" class="btn">Únete a la lista de espera</a>
+            <a href="#desarme" class="btn btn--ghost">Ver cómo está hecha</a>
+          </div>
+          <ul class="chips">
+            <li><strong>80%</strong> menos volumen*</li>
+            <li><strong>3&nbsp;L</strong> de capacidad</li>
+            <li><strong>1</strong> botón</li>
+          </ul>
+        </div>
+      </div>
+      <div class="scroll-hint" aria-hidden="true"><span></span>Desliza</div>
+    </section>
+
+    <!-- MANIFIESTO -->
+    <section class="manifesto" data-scene="none">
+      <div class="wrap">
+        <p class="reveal-words">Casi la mitad de lo que tiramos en casa es comida. En el relleno sanitario se pudre y libera metano. Con Savbia se queda en tu cocina, se seca, se reduce y regresa a tus&nbsp;plantas.</p>
+      </div>
+    </section>
+
+    <!-- DESARME (scroll scrubbed, fijo) -->
+    <section class="sticky-stage" id="desarme" data-stage="desarme" style="--len: 520vh">
+      <div class="sticky">
+        <div class="wrap stage-grid">
+          <div class="stage-copy">
+            <p class="eyebrow">Diseño</p>
+            <h2 class="stage-title">Se abre como una idea&nbsp;simple.</h2>
+            <div class="steps">
+              <article class="step" data-step="0" data-hot="tapa">
+                <span class="step__n">01 / 03</span>
+                <h3>Cierra, sella y olvídate.</h3>
+                <p>La tapa abre sobre su bisagra y sella con una junta perimetral de elastómero. Su ventana ahumada te deja ver el ciclo sin abrir.</p>
+              </article>
+              <article class="step" data-step="1" data-hot="cubeta">
+                <span class="step__n">02 / 03</span>
+                <h3>Tres litros que salen en un gesto.</h3>
+                <p>La cubeta con recubrimiento cerámico se levanta con su asa de acero. Vacíala en tus macetas, en la composta o en el contenedor orgánico, y enjuágala en segundos.</p>
+              </article>
+              <article class="step" data-step="2" data-hot="filtro">
+                <span class="step__n">03 / 03</span>
+                <h3>Aire limpio, cocina fresca.</h3>
+                <p>El módulo trasero de carbón activado atrapa los olores del proceso. Se desprende sin herramientas para cambiarlo cuando toca.</p>
+              </article>
+            </div>
+            <div class="stage-progress" aria-hidden="true"><span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POR DENTRO (despiece) -->
+    <section class="sticky-stage" id="por-dentro" data-stage="explode" style="--len: 460vh">
+      <div class="sticky">
+        <div class="wrap explode-head">
+          <p class="eyebrow">Por dentro</p>
+          <h2>Siete piezas. Un solo propósito.</h2>
+          <p class="sub">Pensada para durar, limpiarse y repararse. Cada componente se separa de los demás.</p>
+        </div>
+        <div class="hud" aria-hidden="true"><span class="hud__dot"></span><span class="hud__txt">Ensamblada</span></div>
+      </div>
+    </section>
+
+    <!-- Lista accesible del despiece (visible también sin 3D) -->
+    <section class="parts" aria-labelledby="parts-title" data-scene="none">
+      <div class="wrap">
+        <h2 id="parts-title" class="visually-hidden">Componentes de la recicladora</h2>
+        <ol class="parts__grid">
+          <li><b>01</b><h3>Tapa hermética</h3><p>Ventana ahumada y junta de elastómero grafito que retiene los olores.</p></li>
+          <li><b>02</b><h3>Asa abatible</h3><p>Acero inoxidable cepillado. Se pliega al cerrar y se levanta para cargar.</p></li>
+          <li><b>03</b><h3>Cubeta cerámica</h3><p>3&nbsp;L con recubrimiento cerámico antiadherente. Removible y fácil de lavar.</p></li>
+          <li><b>04</b><h3>Filtro de carbón activado</h3><p>Neutraliza los olores del ciclo. Reemplazo rápido, sin herramientas.</p></li>
+          <li><b>05</b><h3>Carcasa</h3><p>ABS con acabado porcelana mate, disponible en tres colores.</p></li>
+          <li><b>06</b><h3>Cámara térmica</h3><p>Aluminio que reparte el calor y el flujo de aire de forma pareja.</p></li>
+          <li><b>07</b><h3>Base y motor</h3><p>Motor con bobinado de cobre que mezcla y tritura durante todo el proceso.</p></li>
+          <li class="parts__cta"><a href="#especificaciones" class="link">Ver especificaciones →</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section class="how" id="como-funciona" data-scene="none">
+      <div class="wrap">
+        <p class="eyebrow">Cómo funciona</p>
+        <h2 class="fade-up">Tres pasos. Cero complicaciones.</h2>
+        <div class="how__grid">
+          <article class="card fade-up">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><path d="M10 18h28l-3 22a3 3 0 0 1-3 2H16a3 3 0 0 1-3-2z" /><path d="M8 18h32M19 12c1-3 3-4 5-4s4 1 5 4" /><path d="M20 26l2 10M28 26l-2 10" /></svg>
+            </div>
+            <span class="card__n">1</span>
+            <h3>Llena</h3>
+            <p>Agrega sobras, cáscaras, posos de café, cascarón de huevo y hasta tortillas duras. No necesitas separar ni picar con precisión.</p>
+          </article>
+          <article class="card fade-up">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="14" /><circle cx="24" cy="24" r="6" /><path d="M24 4v4M24 40v4M4 24h4M40 24h4" /></svg>
+            </div>
+            <span class="card__n">2</span>
+            <h3>Presiona</h3>
+            <p>Elige un modo y aléjate. Calor, aire y movimiento hacen el trabajo, con menos ruido que un lavavajillas.</p>
+          </article>
+          <article class="card fade-up">
+            <div class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><path d="M24 42V22" /><path d="M24 26c-8 0-12-5-12-12 7 0 12 4 12 12z" /><path d="M24 22c0-7 4-11 11-11 0 7-4 11-11 11z" /><path d="M12 42h24" /></svg>
+            </div>
+            <span class="card__n">3</span>
+            <h3>Aprovecha</h3>
+            <p>Obtén un material seco y ligero, hasta 80% menor en volumen*, listo para tus plantas, tu composta o el contenedor orgánico.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CIFRAS -->
+    <section class="stats" data-scene="none">
+      <div class="wrap stats__grid">
+        <div class="stat fade-up"><span class="stat__num" data-count="80">0</span><span class="stat__unit">%</span><p>menos volumen de residuos orgánicos*</p></div>
+        <div class="stat fade-up"><span class="stat__num" data-count="3">0</span><span class="stat__unit">L</span><p>de capacidad en la cubeta</p></div>
+        <div class="stat fade-up"><span class="stat__pre">~</span><span class="stat__num" data-count="4">0</span><span class="stat__unit">h</span><p>en el modo más rápido*</p></div>
+        <div class="stat fade-up"><span class="stat__num" data-count="0">0</span><p>bolsas que escurren o huelen en tu bote</p></div>
+      </div>
+    </section>
+
+    <!-- MODOS -->
+    <section class="modes" data-scene="none">
+      <div class="wrap modes__in">
+        <div>
+          <p class="eyebrow">Modos</p>
+          <h2 class="fade-up">Un ciclo para cada día.</h2>
+          <p class="sub fade-up">Elige con un solo botón según lo que quieras hacer con el resultado.</p>
+        </div>
+        <div class="tabs fade-up" data-tabs>
+          <div class="tabs__list" role="tablist" aria-label="Modos de la recicladora">
+            <button role="tab" aria-selected="true" aria-controls="mode-express" id="tab-express">Express</button>
+            <button role="tab" aria-selected="false" aria-controls="mode-eco" id="tab-eco" tabindex="-1">Eco</button>
+            <button role="tab" aria-selected="false" aria-controls="mode-cultivo" id="tab-cultivo" tabindex="-1">Cultivo</button>
+          </div>
+          <div class="tabs__panel" role="tabpanel" id="mode-express" aria-labelledby="tab-express">
+            <span class="tabs__time">3–5 h*</span>
+            <h3>El más rápido.</h3>
+            <p>Seca y reduce tus restos para que el bote de basura deje de oler. Ideal para el uso diario.</p>
+          </div>
+          <div class="tabs__panel" role="tabpanel" id="mode-eco" aria-labelledby="tab-eco" hidden>
+            <span class="tabs__time">5–8 h*</span>
+            <h3>Menos energía.</h3>
+            <p>Un ciclo a menor temperatura para cargas ligeras. Perfecto para correrlo de noche.</p>
+          </div>
+          <div class="tabs__panel" role="tabpanel" id="mode-cultivo" aria-labelledby="tab-cultivo" hidden>
+            <span class="tabs__time">16–20 h*</span>
+            <h3>Para tu jardín.</h3>
+            <p>Un proceso largo y suave que, con una pastilla de microorganismos, produce un material más rico para mezclar con la tierra de tus plantas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUÉ ENTRA -->
+    <section class="food" data-scene="none">
+      <div class="wrap">
+        <p class="eyebrow">Qué puede entrar</p>
+        <h2 class="fade-up">Casi todo lo que se come.</h2>
+        <div class="food__grid">
+          <div class="food__col fade-up">
+            <h3><span class="dot dot--yes"></span>Sí</h3>
+            <ul>
+              <li>Frutas y verduras, crudas o cocidas</li>
+              <li>Cáscaras, semillas pequeñas y tallos</li>
+              <li>Posos de café y bolsitas de té</li>
+              <li>Cascarón de huevo</li>
+              <li>Pan, arroz, pasta y tortillas</li>
+              <li>Restos de carne y lácteos, en poca cantidad</li>
+              <li>Flores y hojas de tus plantas</li>
+            </ul>
+          </div>
+          <div class="food__col fade-up">
+            <h3><span class="dot dot--no"></span>Mejor no</h3>
+            <ul>
+              <li>Huesos grandes</li>
+              <li>Huesos de fruta duros, como aguacate o mango</li>
+              <li>Aceite de cocina o líquidos</li>
+              <li>Cáscaras muy duras, como coco o nuez</li>
+              <li>Plástico, vidrio o metal</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COLORES -->
+    <section class="colors" id="colores" data-stage="colors">
+      <div class="wrap colors__in">
+        <div class="colors__copy">
+          <p class="eyebrow">Colores</p>
+          <h2>Tres acabados. Uno para tu&nbsp;cocina.</h2>
+          <p class="sub" data-color-caption>Blanco porcelana, cálido y luminoso.</p>
+          <div class="swatches" role="radiogroup" aria-label="Color de la recicladora">
+            <button role="radio" aria-checked="true" data-finish="blanco" data-caption="Blanco porcelana, cálido y luminoso." style="--sw:#E6E3DA"><span class="visually-hidden">Blanco</span></button>
+            <button role="radio" aria-checked="false" data-finish="oliva" data-caption="Verde oliva, el tono de la tierra húmeda." style="--sw:#747A50" tabindex="-1"><span class="visually-hidden">Verde oliva</span></button>
+            <button role="radio" aria-checked="false" data-finish="negro" data-caption="Negro grafito, sobrio y sin huellas." style="--sw:#2B2D2C" tabindex="-1"><span class="visually-hidden">Negro</span></button>
+          </div>
+          <p class="swatch-name" data-color-name>Blanco</p>
+          <p class="hint">Arrastra para girarla.</p>
+        </div>
+        <div class="colors__drag" data-drag aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ESPECIFICACIONES -->
+    <section class="specs" id="especificaciones" data-scene="none">
+      <div class="wrap">
+        <p class="eyebrow">Especificaciones</p>
+        <h2 class="fade-up">Los detalles.</h2>
+        <dl class="specs__grid">
+          <div><dt>Capacidad</dt><dd>3&nbsp;L</dd></div>
+          <div><dt>Dimensiones aprox.</dt><dd>31.5 × 29.6 × 35.5&nbsp;cm<br /><small>ancho × fondo × alto</small></dd></div>
+          <div><dt>Reducción de volumen</dt><dd>Hasta 80%*</dd></div>
+          <div><dt>Modos</dt><dd>Express, Eco y Cultivo</dd></div>
+          <div><dt>Ruido</dt><dd>Menor que un lavavajillas*</dd></div>
+          <div><dt>Consumo</dt><dd>0.6–1&nbsp;kWh por ciclo*</dd></div>
+          <div><dt>Alimentación</dt><dd>110–127&nbsp;V · 60&nbsp;Hz*</dd></div>
+          <div><dt>Filtro</dt><dd>Carbón activado, reemplazo cada ~3 meses*</dd></div>
+          <div><dt>Materiales</dt><dd>Carcasa ABS, cubeta con recubrimiento cerámico, asa de acero inoxidable, cámara de aluminio</dd></div>
+          <div><dt>Colores</dt><dd>Blanco, verde oliva y negro</dd></div>
+          <div><dt>Peso</dt><dd class="tbd">Por confirmar</dd></div>
+          <div><dt>Garantía</dt><dd class="tbd">Por confirmar</dd></div>
+        </dl>
+        <p class="footnote">*Valores de referencia del fabricante. Pueden variar según el tipo de residuo, la carga y el modo, y se confirmarán antes del lanzamiento en cada país.</p>
+      </div>
+    </section>
+
+    <!-- SAVBIA: plataforma (contenido actual del sitio) -->
+    <section class="platform" id="savbia" data-scene="none">
+      <div class="wrap platform__in">
+        <div class="platform__copy">
+          <p class="eyebrow">Savbia · plataforma de consumo consciente</p>
+          <h2 class="fade-up">Sabes que quieres actuar. Ya es hora de saber&nbsp;cómo.</h2>
+          <p class="sub fade-up">Conectamos personas con consciencia ambiental con productos sostenibles verificados — sin ruido, sin culpa, con evidencia real.</p>
+          <div class="hero__ctas fade-up">
+            <a href="/quiz/" class="btn">Descubre tu perfil</a>
+            <a href="/tienda/" class="btn btn--ghost">Ir a la tienda</a>
+          </div>
+        </div>
+        <div class="purpose fade-up">
+          <img src="/img/icono-explorar.png" alt="" width="60" height="60" loading="lazy" />
+          <h3>No es falta de intención. Es falta de claridad.</h3>
+          <p>Cada día tomamos decenas de decisiones — qué comprar, qué comer, qué usar — sin saber cuáles importan de verdad.</p>
+          <p><strong>Savbia existe para hacer esas decisiones más claras.</strong></p>
+          <a href="/proposito/" class="link">Conoce nuestro propósito →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIO -->
+    <section class="quote" data-scene="none">
+      <div class="wrap quote__in">
+        <img src="/img/icono-testimonio.png" alt="" width="110" height="160" loading="lazy" />
+        <blockquote class="fade-up">
+          <p>“Me encantaría encontrar en un solo lugar todas las soluciones que tengo para el medio ambiente.”</p>
+          <footer>Usuario real · Investigación de usuario, 2024</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq" id="preguntas" data-scene="none">
+      <div class="wrap faq__in">
+        <h2 class="fade-up">Preguntas frecuentes</h2>
+        <div class="faq__list">
+          <details>
+            <summary>¿Es lo mismo que una compostera?</summary>
+            <p>No exactamente. La composta tradicional tarda semanas y necesita espacio. La recicladora seca, tritura y reduce tus restos en horas; el material resultante puedes mezclarlo con la tierra de tus macetas, sumarlo a tu composta o tirarlo en el contenedor orgánico con mucho menos peso y volumen.</p>
+          </details>
+          <details>
+            <summary>¿Huele mientras trabaja?</summary>
+            <p>La tapa sella con una junta perimetral y el aire del ciclo pasa por el filtro de carbón activado, que retiene los olores. Lo normal es percibir, si acaso, un ligero aroma a tierra.</p>
+          </details>
+          <details>
+            <summary>¿Cuánta energía consume?</summary>
+            <p>Un ciclo usa aproximadamente entre 0.6 y 1&nbsp;kWh según el modo y la carga*. El modo Eco está pensado para gastar menos.</p>
+          </details>
+          <details>
+            <summary>¿Cada cuánto cambio el filtro?</summary>
+            <p>Con uso diario, alrededor de cada tres meses*. El módulo trasero se desprende sin herramientas.</p>
+          </details>
+          <details>
+            <summary>¿Cómo se limpia?</summary>
+            <p>Saca la cubeta por el asa, vacíala y enjuágala con agua y jabón. Recomendamos una limpieza a fondo cada pocos ciclos para mantener el recubrimiento en buen estado.</p>
+          </details>
+          <details>
+            <summary>¿Cuándo llega y cuánto cuesta?</summary>
+            <p>Estamos preparando el lanzamiento en Latinoamérica. Únete a la lista de espera y serás de los primeros en conocer precio, fecha y países disponibles.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTA DE ESPERA (newsletter del sitio actual) -->
+    <section class="waitlist" id="lista" data-scene="none">
+      <div class="wrap waitlist__in">
+        <h2 class="fade-up">Sé de los primeros en tenerla.</h2>
+        <p class="sub fade-up">Recibe la fecha de lanzamiento, el precio y novedades de Savbia.</p>
+        <form class="waitlist__form fade-up" data-waitlist novalidate>
+          <label for="email">Email*</label>
+          <div class="waitlist__row">
+            <input id="email" name="email" type="email" required autocomplete="email" placeholder="tu@correo.com" />
+            <button type="submit" class="btn">Unirme a la lista →</button>
+          </div>
+          <p class="waitlist__note" data-waitlist-msg>Sin spam, solo novedades que importan.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!--@footer-->
+
+  <noscript><style>#loader{display:none}</style></noscript>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

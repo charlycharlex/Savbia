@@ -1,0 +1,8 @@
+node_modules
+dist
+.env
+.env.*
+# Originales del proveedor (pesados; están en Drive). El modelo comprimido vive en public/models
+assets/
+# Configuración local del editor
+.claude/
