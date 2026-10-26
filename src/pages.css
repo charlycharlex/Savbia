@@ -34,9 +34,10 @@
   .gnav__nav li a { display: block; padding: 16px 0; font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); border-bottom: 1px solid var(--line); }
   .gnav__nav li a[aria-current='page'] { color: var(--forest); }
   .gnav__cta { margin-top: 28px; min-height: 52px; font-size: 1rem; }
-  .menu-open, .menu-open body { overflow: hidden; }
+  /* sin overflow:hidden en html: rompería la barra sticky; el panel absorbe los gestos */
+  .gnav__nav { overscroll-behavior: contain; touch-action: none; }
   /* en la página de inicio la barra de producto no debe tapar el menú */
-  .menu-open .pnav { visibility: hidden; }
+  .menu-open .pnav { z-index: 31; }
 }
 
 /* ---------- Bloques comunes de páginas internas ---------- */
@@ -187,3 +188,25 @@
   .gnav, .page .gnav { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--bg); }
 }
 .featured__body .tag, .post-card .tag, .article__head .tag { align-self: flex-start; }
+
+/* ---------- Saltar al contenido (teclado y lectores de pantalla) ---------- */
+.skip {
+  position: fixed; left: 12px; top: 12px; z-index: 100; padding: 10px 16px; border-radius: 999px;
+  background: var(--ink); color: #fff; font-weight: 700; text-decoration: none;
+  transform: translateY(-160%); transition: transform 0.25s var(--ease);
+}
+.skip:focus { transform: none; }
+
+/* ---------- Menú desde la barra de producto (móvil, página de inicio) ---------- */
+.pnav__menu { display: none; }
+@media (max-width: 720px) {
+  .pnav__menu {
+    display: grid; place-content: center; gap: 5px; width: 40px; height: 40px; margin-left: -8px;
+    background: none; border: 0; cursor: pointer;
+  }
+  .pnav__menu span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--ink); transition: transform 0.35s var(--ease); }
+  .menu-open .pnav__menu span:first-child { transform: translateY(3.5px) rotate(45deg); }
+  .menu-open .pnav__menu span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+  .pnav__in { gap: 10px; }
+  .pnav__name { font-size: 1rem; }
+}

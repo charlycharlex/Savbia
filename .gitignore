@@ -6,3 +6,4 @@ dist
 assets/
 # Configuración local del editor
 .claude/
+.captures/

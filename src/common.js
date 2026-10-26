@@ -54,17 +54,26 @@ window.addEventListener('load', () => {
 });
 
 /* ---------------- Menú móvil ---------------- */
-const burger = $('.gnav__burger');
+// Se abre desde el botón del encabezado o, en inicio, desde la barra de producto
+// (que sigue visible al hacer scroll). El panel aparece justo debajo de la barra visible.
+const burgers = $$('[aria-controls="gnav-menu"]');
 const gnav = $('[data-gnav]');
-if (burger && gnav) {
+const menu = $('#gnav-menu');
+if (burgers.length && gnav) {
   const setOpen = (open) => {
+    if (open) {
+      const bar = [$('#pnav'), gnav].find((el) => el && el.getBoundingClientRect().bottom > 0);
+      menu.style.top = `${Math.max(0, bar ? bar.getBoundingClientRect().bottom : 0)}px`;
+    }
     gnav.classList.toggle('is-open', open);
-    burger.setAttribute('aria-expanded', open);
-    burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    burgers.forEach((b) => {
+      b.setAttribute('aria-expanded', open);
+      b.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    });
     document.documentElement.classList.toggle('menu-open', open);
     if (lenis) open ? lenis.stop() : lenis.start();
   };
-  burger.addEventListener('click', () => setOpen(!gnav.classList.contains('is-open')));
+  burgers.forEach((b) => b.addEventListener('click', () => setOpen(!gnav.classList.contains('is-open'))));
   document.addEventListener('keydown', (e) => e.key === 'Escape' && setOpen(false));
   $$('#gnav-menu a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   window.matchMedia('(min-width: 721px)').addEventListener('change', () => setOpen(false));

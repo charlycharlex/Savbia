@@ -4,7 +4,7 @@
   --paper: #f5f6f1;
   --ink: #17201a;
   --ink-2: #414b43;
-  --muted: #6b756d;
+  --muted: #5b655d;
   --forest: #2f6b54;
   --forest-d: #1f4d3b;
   --leaf: #67e899;
@@ -325,8 +325,8 @@ main, .footer, .gnav, .pnav { position: relative; z-index: 1; }
 .footer__legal { margin-top: 48px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.8rem; }
 
 /* ---------- Animaciones de entrada ---------- */
-.fade-up { opacity: 0; transform: translateY(28px); }
-.no-js .fade-up, .reduced .fade-up { opacity: 1; transform: none; }
+.js .fade-up { opacity: 0; transform: translateY(28px); }
+.reduced .fade-up { opacity: 1 !important; transform: none !important; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 980px) {

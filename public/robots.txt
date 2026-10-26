@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://savbia.vercel.app/sitemap.xml

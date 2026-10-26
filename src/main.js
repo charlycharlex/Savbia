@@ -33,7 +33,8 @@ if (hasWebGL()) {
       fallbackImages();
       hideLoader();
     });
-  setTimeout(hideLoader, 9000); // nunca bloquear la página
+  // nunca bloquear la página: si la red es lenta, se muestra el texto y el modelo entra al llegar
+  setTimeout(hideLoader, 4000);
 } else {
   fallbackImages();
   hideLoader();
@@ -61,14 +62,15 @@ function poses() {
   const side = M ? 0 : 0.19;
   const lift = M ? 0.19 : 0;
   const base = { az: -0.55, el: 0.1, dist: 1.45, ty: 0.18, sx: side, sy: lift, desarme: 0, explode: 0, xray: 0, spin: 1, opacity: 1 };
-  const HERO = { ...base, sy: M ? 0.22 : 0 };
+  // En móvil el producto va arriba del texto: un poco más lejos para que respire
+  const HERO = { ...base, sy: M ? 0.175 : 0, dist: M ? 1.85 : base.dist };
   const DES0 = { ...base, az: -0.45, el: 0.14, dist: 1.6, ty: 0.19, sx: side * 0.95, spin: 0.2 };
   const DES1 = { ...DES0, az: -0.28, el: 0.46, dist: 1.8, ty: 0.24, desarme: 0.25, spin: 0 };
   const DES2 = { ...DES1, az: -0.72, el: 0.2, dist: 2.2, ty: 0.34, desarme: 0.625 };
   const DES3 = { ...DES2, az: -0.78, el: 0.15, dist: 2.3, ty: 0.3, desarme: 1 };
   const EX1 = { ...DES3, az: -0.32, el: 0.1, dist: 3.15, ty: 0.38, sx: 0, sy: M ? -0.05 : -0.01, explode: 1, xray: 1 };
   const EX2 = { ...EX1, az: 0.6, el: 0.24 };
-  const COL = { ...base, az: -0.42, el: 0.2, dist: 1.6, sx: M ? 0 : 0.17, sy: M ? 0.2 : 0, spin: 0.5 };
+  const COL = { ...base, az: -0.42, el: 0.2, dist: M ? 1.9 : 1.6, sx: M ? 0 : 0.17, sy: M ? 0.22 : 0, spin: 0.5 };
   return { HERO, DES0, DES1, DES2, DES3, EX1, EX2, COL };
 }
 

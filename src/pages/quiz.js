@@ -1,6 +1,6 @@
 // Quiz de sostenibilidad: 8 preguntas, cada respuesta vale de 0 a 3 puntos.
 // Las preguntas, perfiles y recomendaciones se editan aquí.
-import { $, $$, gsap, reduced } from '../common.js';
+import { $, $$, gsap, reduced, lenis } from '../common.js';
 
 const QUESTIONS = [
   {
@@ -145,7 +145,8 @@ function renderResult() {
   show('result');
   requestAnimationFrame(() => requestAnimationFrame(() => (meter.style.width = `${(score / MAX) * 100}%`)));
   $('[data-profile]', root).focus({ preventScroll: true });
-  window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  if (lenis) lenis.scrollTo(0, { duration: 0.8 });
+  else window.scrollTo({ top: 0 });
 }
 
 $('[data-start]', root).addEventListener('click', () => {

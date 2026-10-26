@@ -39,8 +39,12 @@ const PARTS = [
 ];
 
 export function createScene({ canvas, onProgress }) {
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  const capture = import.meta.env.DEV && location.search.includes('capture');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: capture });
+  // En celulares bajamos un poco la resolución y el pase de vidrio para ganar fluidez
+  const small = Math.min(window.innerWidth, window.innerHeight) <= 720;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, small ? 1.75 : 2));
+  if ('transmissionResolutionScale' in renderer) renderer.transmissionResolutionScale = small ? 0.5 : 1;
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.AgXToneMapping;
   renderer.toneMappingExposure = 1.15;
@@ -58,7 +62,7 @@ export function createScene({ canvas, onProgress }) {
   const key = new THREE.DirectionalLight(0xfff6ea, 2.2);
   key.position.set(1.2, 2.4, 1.6);
   key.castShadow = true;
-  key.shadow.mapSize.set(2048, 2048);
+  key.shadow.mapSize.set(small ? 1024 : 2048, small ? 1024 : 2048);
   key.shadow.camera.left = -0.8; key.shadow.camera.right = 0.8;
   key.shadow.camera.top = 1.4; key.shadow.camera.bottom = -0.6;
   key.shadow.camera.near = 0.5; key.shadow.camera.far = 6;
@@ -82,8 +86,8 @@ export function createScene({ canvas, onProgress }) {
 
   const state = {
     ready: false,
-    mixer: null,
-    action: null,
+    tracks: [],
+    base: {},
     groups: {},
     rest: {},
     end: {},
@@ -134,24 +138,30 @@ export function createScene({ canvas, onProgress }) {
           }
         });
 
-        // Animación Desarme
-        state.mixer = new THREE.AnimationMixer(root);
+        // Animación Desarme: evaluamos cada pista directamente en vez de usar
+        // AnimationMixer, que solo reescribe un valor cuando cambia y dejaría
+        // piezas "pegadas" en la pose anterior (parpadeo).
         const clip = gltf.animations.find((a) => a.name === 'Desarme') || gltf.animations[0];
-        state.action = state.mixer.clipAction(clip);
-        state.action.setLoop(THREE.LoopOnce, 1);
-        state.action.clampWhenFinished = true;
-        state.action.play();
+        state.tracks = clip.tracks.map((track) => {
+          const { nodeName, propertyName } = THREE.PropertyBinding.parseTrackName(track.name);
+          return { node: root.getObjectByName(nodeName), prop: propertyName, interp: track.createInterpolant() };
+        });
 
         for (const p of PARTS) state.groups[p.key] = root.getObjectByName(p.node);
         // Pose de reposo (t=0) y final (t=8)
-        state.mixer.setTime(0);
+        for (const p of PARTS) state.base[p.key] = snap(state.groups[p.key]);
+        applyClip(0);
         for (const p of PARTS) state.rest[p.key] = snap(state.groups[p.key]);
-        state.mixer.setTime(CLIP_SECONDS - 0.001);
+        applyClip(CLIP_SECONDS);
         for (const p of PARTS) state.end[p.key] = snap(state.groups[p.key]);
-        state.mixer.setTime(0);
+        applyClip(0);
 
-        state.ready = true;
-        resolve();
+        // Compilar los shaders antes de mostrar el modelo evita tirones en los primeros cuadros
+        const ready = () => {
+          state.ready = true;
+          resolve();
+        };
+        (renderer.compileAsync ? renderer.compileAsync(scene, camera) : Promise.resolve()).then(ready, ready);
       },
       (e) => {
         if (e.total) onProgress?.(e.loaded / e.total);
@@ -162,6 +172,21 @@ export function createScene({ canvas, onProgress }) {
 
   function snap(o) {
     return { p: o.position.clone(), q: o.quaternion.clone() };
+  }
+
+  // Coloca todas las piezas en el instante t (segundos) del clip Desarme
+  function applyClip(t) {
+    for (const p of PARTS) {
+      const g = state.groups[p.key];
+      g.position.copy(state.base[p.key].p);
+      g.quaternion.copy(state.base[p.key].q);
+    }
+    for (const tr of state.tracks) {
+      const v = tr.interp.evaluate(t);
+      if (tr.prop === 'quaternion') tr.node.quaternion.fromArray(v);
+      else if (tr.prop === 'position') tr.node.position.fromArray(v);
+      else if (tr.prop === 'scale') tr.node.scale.fromArray(v);
+    }
   }
 
   // ---- Cambio de acabado ----
@@ -234,7 +259,7 @@ export function createScene({ canvas, onProgress }) {
     for (const p of PARTS) {
       const g = state.groups[p.key];
       if (!g) continue;
-      if (e <= 0.0001) continue; // el mixer ya dejó la pose de la animación
+      if (e <= 0.0001) continue; // applyClip ya dejó la pose de la animación
       const from = { p: g.position.clone(), q: g.quaternion.clone() };
       const base = p.fromEnd ? state.end[p.key] : state.rest[p.key];
       tmpV.copy(base.p);
@@ -307,17 +332,12 @@ export function createScene({ canvas, onProgress }) {
     elapsed += dt;
     // suavizado (la rueda ya viene suavizada por Lenis; esto quita saltos)
     const L = 7;
-    for (const k of Object.keys(target)) cur[k] = damp(cur[k], target[k], k === 'opacity' ? 9 : L, dt);
+    // Mientras carga el modelo la cámara espera en su pose inicial: así la entrada
+    // se ve completa cuando aparece, aunque la descarga tarde en el celular.
+    if (state.ready) for (const k of Object.keys(target)) cur[k] = damp(cur[k], target[k], k === 'opacity' ? 9 : L, dt);
 
     if (state.ready) {
-      // La animación solo mueve algunos canales (p. ej. la tapa solo rota):
-      // partimos siempre de la pose de reposo para no arrastrar el despiece.
-      for (const p of PARTS) {
-        const g = state.groups[p.key];
-        g.position.copy(state.rest[p.key].p);
-        g.quaternion.copy(state.rest[p.key].q);
-      }
-      state.mixer.setTime(Math.min(CLIP_SECONDS - 0.001, Math.max(0, cur.desarme) * CLIP_SECONDS));
+      applyClip(Math.min(1, Math.max(0, cur.desarme)) * CLIP_SECONDS);
       poseParts();
       if (colorTween.t < 1) {
         colorTween.t = Math.min(1, colorTween.t + dt / 0.9);
@@ -337,7 +357,10 @@ export function createScene({ canvas, onProgress }) {
     camera.position.set(Math.sin(cur.az) * ce * d, cur.ty + Math.sin(cur.el) * d, Math.cos(cur.az) * ce * d);
     camera.lookAt(0, cur.ty, 0);
     // Desplazar el producto en pantalla sin deformar la perspectiva
-    camera.setViewOffset(w, h, -cur.sx * w, cur.sy * h, w, h);
+    // En móvil el canvas mide 100lvh, pero la barra del navegador tapa parte:
+    // centramos respecto al área visible (innerHeight) para que no se vea más abajo.
+    const vis = Math.min(h, window.innerHeight || h);
+    camera.setViewOffset(w, h, -cur.sx * w, cur.sy * vis + (h - vis) / 2, w, h);
 
     canvas.style.opacity = cur.opacity.toFixed(3);
     if (cur.opacity > 0.01) {
@@ -362,5 +385,6 @@ export function createScene({ canvas, onProgress }) {
     setReduced: (v) => (reduced = v),
     resize,
     step,
+    ...(import.meta.env.DEV ? { _debug: { state, renderer, camera, scene } } : {}),
   };
 }
